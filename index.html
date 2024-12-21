@@ -1,0 +1,289 @@
+<html><!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>شحن لعبة ببجي</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(to right, #1f4037, #99f2c8);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+      text-align: center;
+      flex-direction: column;
+      padding: 20px;
+      transition: all 0.5s ease;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
+
+    p {
+      font-size: 1.2em;
+      margin-bottom: 40px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 500px;
+      margin: 20px;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      opacity: 0;
+      animation: fadeIn 1s forwards;
+    }
+
+    @keyframes fadeIn {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    .price-option {
+      background-color: #4CAF50;
+      color: white;
+      padding: 15px 30px;
+      font-size: 1.2em;
+      border: none;
+      margin: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .price-option:hover {
+      background-color: #45a049;
+      transform: scale(1.05);
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    #selected-price {
+      font-size: 1.5em;
+      margin-top: 20px;
+      padding: 10px;
+      background: #fff;
+      color: #333;
+      border-radius: 5px;
+      margin-bottom: 30px;
+    }
+
+    .confirm-container {
+      display: none;
+      background: #fff;
+      color: #333;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .confirm-button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 15px 30px;
+      font-size: 1.2em;
+      border: none;
+      margin: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .confirm-button:hover {
+      background-color: #45a049;
+      transform: scale(1.05);
+    }
+
+    .contact-icons {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .contact-icon {
+      width: 50px;
+      height: 50px;
+      margin: 10px;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .contact-icon:hover {
+      transform: scale(1.1);
+    }
+
+    .user-info-form {
+      display: block;
+      margin-bottom: 20px;
+    }
+
+    .user-info-form input {
+      padding: 10px;
+      margin: 10px;
+      width: 100%;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+      font-size: 1em;
+    }
+
+    .user-info-form label {
+      font-size: 1.1em;
+      margin-bottom: 5px;
+      display: block;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        width: 90%;
+      }
+
+      h1 {
+        font-size: 2em;
+      }
+
+      .price-option {
+        width: 100%;
+        font-size: 1.1em;
+      }
+
+      .confirm-button {
+        width: 100%;
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- الشاشة الرئيسية مع الترحيب -->
+  <div class="container" id="welcome-container">
+    <h1>مرحباً بك يا صديقي!</h1>
+    <p>هل تريد شحن لعبة ببجي؟</p>
+    <button class="price-option" id="startButton">نعم، أريد الشحن</button>
+  </div>
+
+  <!-- صفحة اختيار الشحن -->
+  <div class="container hidden" id="pricing-container">
+    <h1>اختر عدد الشدات التي تريد شحنها</h1>
+    <div class="pricing-options">
+      <button class="price-option" onclick="chooseShards(100, '1 دولار')">100 شدة - 1 دولار</button>
+      <button class="price-option" onclick="chooseShards(300, '3 دولار')">300 شدة - 3 دولار</button>
+      <button class="price-option" onclick="chooseShards(500, '5 دولار')">500 شدة - 5 دولار</button>
+    </div>
+    <p id="selected-price"></p>
+  </div>
+
+  <!-- نموذج المعلومات الشخصية -->
+  <div class="container hidden" id="user-info-container">
+    <h1>يرجى إدخال معلوماتك لإتمام عملية الشحن:</h1>
+    <form id="userInfoForm" class="user-info-form">
+      <label for="userName">الاسم:</label>
+      <input type="text" id="userName" name="userName" required>
+      <label for="userEmail">البريد الإلكتروني:</label>
+      <input type="email" id="userEmail" name="userEmail" required>
+    </form>
+    <h2>اختر وسيلة للتواصل:</h2>
+    <div class="contact-icons">
+      <input type="radio" name="contactMethod" id="telegramOption" value="telegram" required>
+      <label for="telegramOption">
+        <img class="contact-icon" src="https://upload.wikimedia.org/wikipedia/commons/6/6e/Telegram_logo_2021.svg" alt="Telegram">
+      </label>
+      <input type="radio" name="contactMethod" id="facebookOption" value="facebook" required>
+      <label for="facebookOption">
+        <img class="contact-icon" src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook">
+      </label>
+    </div>
+    <button class="confirm-button" id="confirmUserInfoButton" onclick="confirmUserInfo()">تأكيد وإتمام الدفع</button>
+  </div>
+
+  <!-- نافذة التأكيد -->
+  <div class="confirm-container hidden" id="confirm-container">
+    <p id="confirm-message"></p>
+    <button class="confirm-button" onclick="confirmPayment()">تأكيد الشحن</button>
+    <button class="confirm-button" onclick="cancelSelection()">إلغاء</button>
+  </div>
+
+  <script>
+    let selectedShards = 0;
+    let selectedPrice = "";
+
+    // عرض شاشة الترحيب
+    document.getElementById("startButton").addEventListener("click", function() {
+      document.getElementById("welcome-container").classList.add("hidden");
+      document.getElementById("pricing-container").classList.remove("hidden");
+    });
+
+    // دالة لاختيار الشدات
+    function chooseShards(shards, price) {
+      selectedShards = shards;
+      selectedPrice = price;
+      document.getElementById("selected-price").innerHTML = `لقد اخترت ${shards} شدة بسعر ${price}.`;
+      document.getElementById("pricing-container").classList.add("hidden");
+      document.getElementById("user-info-container").classList.remove("hidden");
+    }
+
+    // دالة لتأكيد المعلومات الشخصية
+    function confirmUserInfo(event) {
+      event.preventDefault();
+
+      const userName = document.getElementById('userName').value;
+      const userEmail = document.getElementById('userEmail').value;
+      const contactMethod = document.querySelector('input[name="contactMethod"]:checked');
+
+      if (!contactMethod) {
+        alert('يرجى اختيار وسيلة للتواصل.');
+        return;
+      }
+
+      const contactMethodValue = contactMethod.value;
+      const message = `معلومات الزبون:
+      الاسم: ${userName}
+      البريد الإلكتروني: ${userEmail}
+      الشحنة المختارة: ${selectedShards} شدة - ${selectedPrice}
+      وسيلة التواصل: ${contactMethodValue}`;
+
+      // إرسال البيانات عبر رابط تليجرام
+      if (contactMethodValue === 'telegram') {
+        const telegramUrl = `https://t.me/tofe_00_iq?text=${encodeURIComponent(message)}`;
+        window.open(telegramUrl, "_blank");
+      } else if (contactMethodValue === 'facebook') {
+        const facebookUrl = `https://www.facebook.com/messages/t/yourPageName?text=${encodeURIComponent(message)}`;
+        window.open(facebookUrl, "_blank");
+      }
+
+      document.getElementById("user-info-container").classList.add("hidden");
+      document.getElementById("confirm-container").classList.remove("hidden");
+      document.getElementById("confirm-message").innerText = "تم تأكيد الشحن! سيتم التواصل معك قريباً.";
+    }
+
+    // دالة لتأكيد الدفع
+    function confirmPayment() {
+      alert("تم إتمام عملية الدفع بنجاح!");
+    }
+
+    // دالة لإلغاء الاختيار
+    function cancelSelection() {
+      document.getElementById("confirm-container").classList.add("hidden");
+      document.getElementById("pricing-container").classList.remove("hidden");
+    }
+  </script>
+
+</body>
+</html>
+</html>
